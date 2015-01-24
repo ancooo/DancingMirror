@@ -25,6 +25,7 @@ class ofApp : public ofBaseApp{
     unsigned char *pixels_a;
     unsigned char *pixels_b;
     int drawCount;
+    int secondCount;
     bool captureSwitch;
     bool drawSwitch;
 	ofTexture videoTexture;

@@ -3,11 +3,15 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
-	camWidth  = 320;
-	camHeight = 240;
+    ofBackground(255,255,255);
+    ofEnableAlphaBlending();
+	camWidth  = 640;
+	camHeight = 480;
     captureSwitch = false;
     drawSwitch = false;
     drawCount = 0;
+    // ofLog() << " drawCount: " << drawCount;
+    secondCount = 0;
     
 	vector<ofVideoDevice> devices = grabber.listDevices();
 	
@@ -32,35 +36,43 @@ void ofApp::setup(){
     }
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);
 	ofSetVerticalSync(true);
-
 }
 
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	ofBackground(100,100,100);
     grabber.update();
-    if (!grabber.isFrameNew()) return;
-    
+    if (!grabber.isFrameNew())
+    return;
     drawCount += 1;
-    if(drawCount < 5) return;
+    if(drawCount < 4) return;
     drawCount = 0;
+    //if(drawCount > 2) captureWithSwitch();
     
+   // secondCount += 1;
+   // if(secondCount >= 4)return;
+   // secondCount = 0;
+   // if (secondCount = 10) captureWithSwitch();
+   
     drawSwitch = !drawSwitch;
-    ofLog() << "drawSwitch: " << drawSwitch;
+    ofLog() << " drawCount: " " drawswitch: "<< drawCount; drawSwitch;
     if(drawSwitch) videoTexture.loadData(pixels_a, camWidth,camHeight, GL_RGB);
     else videoTexture.loadData(pixels_b, camWidth,camHeight, GL_RGB);
+    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	ofSetHexColor(0xffffff);
-	grabber.draw(20,20);
-    videoTexture.draw(20+camWidth,20,camWidth,camHeight);
+    grabber.draw(camWidth,0,-camWidth,camHeight);
+    videoTexture.draw(camWidth,0,-camWidth,camHeight);
+    ofSetColor(255, 255, 255, 120);
 }
 
 void ofApp::captureWithSwitch(){
     ofLog() << "capture!! " << captureSwitch;
+    //ofLog() << " drawCount: " << drawCount;
+
     
     unsigned char * pixels_to;
     pixels_to = captureSwitch ? pixels_a : pixels_b;
@@ -68,6 +80,7 @@ void ofApp::captureWithSwitch(){
         pixels_to[i] = grabber.getPixels()[i]; // copy pixel
     }
     captureSwitch = !captureSwitch;
+    
 }
 
 //--------------------------------------------------------------
@@ -92,7 +105,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-	
+	//if (button == 'Pressed') captureWithSwitch();
 }
 
 //--------------------------------------------------------------
