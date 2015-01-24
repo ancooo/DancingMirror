@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
+    popsong.loadSound("sounds/popsong.mp3");
     ofBackground(255,255,255);
     ofEnableAlphaBlending();
 	camWidth  = 640;
@@ -10,8 +11,9 @@ void ofApp::setup(){
     captureSwitch = false;
     drawSwitch = false;
     drawCount = 0;
-    // ofLog() << " drawCount: " << drawCount;
     secondCount = 0;
+    //ofRandom() > 40;
+    
     
 	vector<ofVideoDevice> devices = grabber.listDevices();
 	
@@ -36,11 +38,15 @@ void ofApp::setup(){
     }
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);
 	ofSetVerticalSync(true);
-}
+    
+    
+    int bufferSize = 256;
+    }
 
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    ofSoundUpdate();
     grabber.update();
     if (!grabber.isFrameNew())
     return;
@@ -58,7 +64,6 @@ void ofApp::update(){
     ofLog() << " drawCount: " " drawswitch: "<< drawCount; drawSwitch;
     if(drawSwitch) videoTexture.loadData(pixels_a, camWidth,camHeight, GL_RGB);
     else videoTexture.loadData(pixels_b, camWidth,camHeight, GL_RGB);
-    
 
 }
 
@@ -70,6 +75,7 @@ void ofApp::draw(){
 }
 
 void ofApp::captureWithSwitch(){
+    //captureWithSwitch(); = ofRandom();
     ofLog() << "capture!! " << captureSwitch;
     //ofLog() << " drawCount: " << drawCount;
 
@@ -85,9 +91,9 @@ void ofApp::captureWithSwitch(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed (int key){
-    if (key == ' ') captureWithSwitch();
+    if (key == ' ')captureWithSwitch();
+    if (key == 'p')popsong.play();
 }
-
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){ 
 	
@@ -105,7 +111,6 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-	//if (button == 'Pressed') captureWithSwitch();
 }
 
 //--------------------------------------------------------------
@@ -127,3 +132,4 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+

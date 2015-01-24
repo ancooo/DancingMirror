@@ -21,6 +21,7 @@ class ofApp : public ofBaseApp{
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	
+    ofSoundPlayer  popsong;
 	ofVideoGrabber grabber;
     unsigned char *pixels_a;
     unsigned char *pixels_b;
@@ -31,4 +32,7 @@ class ofApp : public ofBaseApp{
 	ofTexture videoTexture;
 	int camWidth;
 	int camHeight;
-};
+    
+    float ofRandom();
+    
+    };
