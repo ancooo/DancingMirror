@@ -6,13 +6,12 @@ void ofApp::setup(){
     popsong.loadSound("sounds/popsong.mp3");
     ofBackground(255,255,255);
     ofEnableAlphaBlending();
-	camWidth  = 640;
-	camHeight = 480;
+	camWidth  = 960;
+	camHeight = 720;
     captureSwitch = false;
     drawSwitch = false;
     drawCount = 0;
     secondCount = 0;
-    //ofRandom() > 40;
     
     
 	vector<ofVideoDevice> devices = grabber.listDevices();
@@ -38,14 +37,15 @@ void ofApp::setup(){
     }
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);
 	ofSetVerticalSync(true);
-    
-    
+
     int bufferSize = 256;
     }
 
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    if (ofRandom(0,1) < 0.02) captureWithSwitch();
+    
     ofSoundUpdate();
     grabber.update();
     if (!grabber.isFrameNew())
@@ -53,18 +53,13 @@ void ofApp::update(){
     drawCount += 1;
     if(drawCount < 4) return;
     drawCount = 0;
-    //if(drawCount > 2) captureWithSwitch();
+    if(drawCount > 2) captureWithSwitch();
     
-   // secondCount += 1;
-   // if(secondCount >= 4)return;
-   // secondCount = 0;
-   // if (secondCount = 10) captureWithSwitch();
-   
     drawSwitch = !drawSwitch;
-    ofLog() << " drawCount: " " drawswitch: "<< drawCount; drawSwitch;
+    //ofLog() << " drawCount: " " drawswitch: "<< drawCount; drawSwitch;
+    //ofLog() << "capture!! " << captureSwitch;
     if(drawSwitch) videoTexture.loadData(pixels_a, camWidth,camHeight, GL_RGB);
     else videoTexture.loadData(pixels_b, camWidth,camHeight, GL_RGB);
-
 }
 
 //--------------------------------------------------------------
@@ -75,23 +70,18 @@ void ofApp::draw(){
 }
 
 void ofApp::captureWithSwitch(){
-    //captureWithSwitch(); = ofRandom();
-    ofLog() << "capture!! " << captureSwitch;
-    //ofLog() << " drawCount: " << drawCount;
-
-    
+    ofLog() << "captureWithSwitch()";
     unsigned char * pixels_to;
     pixels_to = captureSwitch ? pixels_a : pixels_b;
     for(int i = 0; i < camWidth*camHeight*3; i++){
         pixels_to[i] = grabber.getPixels()[i]; // copy pixel
     }
     captureSwitch = !captureSwitch;
-    
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed (int key){
-    if (key == ' ')captureWithSwitch();
+    //if (key == ' ')captureWithSwitch();
     if (key == 'p')popsong.play();
 }
 //--------------------------------------------------------------
@@ -106,11 +96,11 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-	
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
+
 }
 
 //--------------------------------------------------------------

@@ -33,6 +33,4 @@ class ofApp : public ofBaseApp{
 	int camWidth;
 	int camHeight;
     
-    float ofRandom();
-    
     };
